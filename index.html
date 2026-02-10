@@ -173,10 +173,15 @@
   }
 
   @media (max-width: 500px) {
-    .card h1 { font-size: 2rem; }
-    .success h1 { font-size: 2.4rem; }
-    .gallery { grid-template-columns: 1fr 1fr; gap: 10px; }
+    body { padding: 10px; }
+    .card { padding: 35px 25px; }
+    .card h1 { font-size: 1.8rem; margin-bottom: 25px; }
+    .success h1 { font-size: 2.2rem; }
+    .success p { font-size: 1rem; }
+    .gallery { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .gallery img { border-radius: 12px; }
     .btn { padding: 14px 32px; font-size: 1.1rem; }
+    .btn-no { padding: 12px 28px; font-size: 1rem; }
   }
 </style>
 </head>
@@ -242,15 +247,24 @@
     btnNo.style.top = y + 'px';
   }
 
-  btnNo.addEventListener('touchstart', function(e) { e.preventDefault(); dodge(); });
-
-  // Dodge whenever mouse gets within 150px of the No button
+  // Desktop: dodge when mouse gets near
   document.addEventListener('mousemove', function(e) {
     const rect = btnNo.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
     if (dist < 150) dodge();
+  });
+
+  // Mobile: dodge on touch near the button or directly on it
+  btnNo.addEventListener('touchstart', function(e) { e.preventDefault(); dodge(); });
+  document.addEventListener('touchmove', function(e) {
+    const touch = e.touches[0];
+    const rect = btnNo.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dist = Math.hypot(touch.clientX - cx, touch.clientY - cy);
+    if (dist < 100) dodge();
   });
 
   // ── "Yes" click ──
